@@ -45,17 +45,19 @@ License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2
 			}
 		}
 	}
+    if (!function_exists('poo_commit_suicide')) {
+        function poo_commit_suicide() {
+            global $health;
+            $plugin = plugin_basename( __FILE__ );
+            $plugin_data = get_plugin_data( __FILE__, false );
+            if ( $health == 'ng' && is_plugin_active($plugin) ) {
+                deactivate_plugins( $plugin );
+                wp_die( "ERROR: <strong>woo_options_add</strong> function already defined by another plugin. " .
+                    $plugin_data['Name']. " is unable to continue and has been deactivated. " .
+                    "<br /><br />Please contact PootlePress at <a href=\"mailto:support@pootlepress.com?subject=Woo_Options_Add Conflict\"> support@pootlepress.com</a> for additional information / assistance." .
+                    "<br /><br />Back to the WordPress <a href='".get_admin_url(null, 'plugins.php')."'>Plugins page</a>." );
+            }
+        }
+    }
 
-	function poo_commit_suicide() {
-		global $health;
-		$plugin = plugin_basename( __FILE__ );
-		$plugin_data = get_plugin_data( __FILE__, false );
-		if ( $health == 'ng' && is_plugin_active($plugin) ) {
-			deactivate_plugins( $plugin );
-			wp_die( "ERROR: <strong>woo_options_add</strong> function already defined by another plugin. " . 
-				$plugin_data['Name']. " is unable to continue and has been deactivated. " . 
-				"<br /><br />Please contact PootlePress at <a href=\"mailto:support@pootlepress.com?subject=Woo_Options_Add Conflict\"> support@pootlepress.com</a> for additional information / assistance." . 
-				"<br /><br />Back to the WordPress <a href='".get_admin_url(null, 'plugins.php')."'>Plugins page</a>." );
-		}
-	}	
 ?>
