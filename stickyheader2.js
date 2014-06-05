@@ -8,12 +8,13 @@
  * ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- 
 */
 (function( $ ) {
+
     $.fn.stickypoo = function(o) {
     	var debug	= false,
     		poo = {
     		options			:	o,
-    		viewportW		:	$(window).width(),
-    		isMobile		:	($(window).width() < 768) ? true : false,
+    		viewportW		:	window.innerWidth, // this is the width that media query in css is tested against
+    		isMobile		:	(window.innerWidth < 768) ? true : false,
     		isFullWidth		:	($('body').hasClass("full-width")) ? true : false,
     		isBoxedLayout	:	($('body').hasClass("boxed-layout")) ? true : false,
     		isFixedMobile	:	($('body').hasClass("fixed-mobile")) ? true : false,
@@ -36,11 +37,15 @@
     		hdrBackgroundCss	:	{ position : 'absolute', top : 0, zIndex : '9002', opacity : 0.2 },
     		hdrCss				: 	{ position : 'relative', display : 'block', background : 'none', zIndex : 9003 },
     		noTransparency		:	{ backgroundColor: '#ffffff' }
-    			}
+    			};
 		return this.each(function() {
-			if (debug) alert( "viewWidth=" + poo.viewportW +"\n" + JSON.stringify(poo.options));
+			if (debug) console.log( "viewWidth=" + poo.viewportW +"\n" +
+                "Window Width: " + $(window).width() + "\n" +
+                "Window Inner Width: " + window.innerWidth + "\n" +
+                JSON.stringify(poo.options));
 			// setup ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 			pootlepress.stickyHdrOptions = o;		// save my presence in global variable
+            pootlepress.poo = poo;
 			poo.elm = $(this); poo.hdr = $(this);
 			poo.nav = ( poo.isFullWidth ) ? $('#nav-container') : $('#navigation');
 			poo.noTransparency.backgroundColor = $('body').css( 'background-color' );
@@ -52,7 +57,7 @@
 			poo.hdrDims.innerWidth		= poo.hdr.innerWidth() + "px";
 			poo.hdrDims.outerWidth		= poo.hdr.outerWidth() + "px";
 			poo.hdrDims.trueOuterWidth	= poo.hdr.outerWidth(true) + "px";
-			if (debug) alert(JSON.stringify(poo.hdrDims));
+			if (debug) console.log(JSON.stringify(poo.hdrDims));
 			if ( poo.isFullWidth ) {
 	 			poo.stickyHdr.width = '100%';
 	 			poo.stickyNav.width = '100%';
@@ -67,50 +72,82 @@
     			poo.stickyNav.width = '100%';
 			} else {
 				poo.stickyHdr.width =  poo.hdrDims.trueOuterWidth;
- 				poo.stickyNav.width = poo.nav.css('width');
+ 				poo.stickyNav.width = poo.options.layoutWidth;
 				poo.nav.css('min-height', '0');
 			}
-			
+
+            poo.hdr.attr('bg-color', poo.hdr.css('background-color'));
+
 			// check for header background opacity setting
 			if ( isNaN(poo.options.opacity) || poo.options.opacity < 0 || poo.options.opacity > 100 )
 				poo.hdrBackgroundCss.opacity = '1'; else poo.hdrBackgroundCss.opacity = (poo.options.opacity / 100) +"";
 
 			// check for mobile device ----- ----- ----- ----- ----- ----- ----- ----- ----- 
-			if ( poo.isMobile && !poo.options.mobile )		// mobile view but mobile option not selected
-				return; 									// Fahgettaboudit
-			if ( poo.isMobile && poo.options.responsive ) {	// mobile view and responsive layout
-				doMobile();
-				return;
-			}
+//			if ( poo.isMobile && !poo.options.mobile )		// mobile view but mobile option not selected
+//				return; 									// Fahgettaboudit
 
 			// move nav menu if align right option selected ----- ----- ----- ----- ----- 
 			if ( poo.options.alignright && !poo.isMobile)				// not for mobile 
 				$('#logo').css(poo.logoMods).after(poo.nav.css(poo.alignRightNav).detach());
 
 			// set header background opacity if less that 100%
-			if ( poo.hdrBackgroundCss.opacity != '1') setBackgroundOpacity();
+            // this function is obsolete
+			//if ( poo.hdrBackgroundCss.opacity != '1') setBackgroundOpacity();
 
 			// check for and set header sticky ----- ----- ----- ----- ----- ----- ----- 
-			if ( poo.options.stickyhdr && !(poo.isMobile && poo.options.responsive) ) {
+			if ( poo.options.stickyhdr ) { //&& !(poo.isMobile && poo.options.responsive) ) {
 				setHeaderSticky();
 				if ( !poo.options.alignright )			// if nav menu wasn't moved 
 					setNavbarSticky();					// make it sticky
 			}
-			
+
+            if ( poo.isMobile && poo.options.responsive ) {	// mobile view and responsive layout
+                if (poo.options.mobile) {
+                    doStickyMobile();
+                } else {
+                    doNormalMobile();
+                }
+            }
+
+
 		  // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  
 			function setHeaderSticky() {
 				if ( !poo.opacityLayers && isTransparent(poo.hdr) ) {
-					if (debug) alert("setHeaderSticky says hdr transparent test is true" +" " +poo.hdr.css('background-image') +" " + poo.hdr.css('background-color') );
+					if (debug) console.log("setHeaderSticky says hdr transparent test is true" +" " +poo.hdr.css('background-image') +" " + poo.hdr.css('background-color') );
 					poo.hdr.css( poo.noTransparency );
 				}
 				// adjust for WP Admin Bar and Top Navbar 
- 				poo.x = $('#wpadminbar:visible').height(); 
+ 				poo.x = $('#wpadminbar:visible').height();
  				poo.x = ( poo.x == null || isNaN(poo.x)) ? 0 : poo.x;
  				poo.y = $('#top:visible').height();
  				poo.y = ( poo.y == null || isNaN(poo.y)) ? 0 : poo.y;
- 				poo.stickyHdr.top += poo.x + poo.y;
- 				poo.stickyTopNav.top += poo.x;
+
+                poo.borderTopWidth = 0;
+                if (poo.options.bordertop != false && parseInt(poo.options.bordertop['width']) > 0) {
+                    var borderWidth = parseInt(poo.options.bordertop['width']);
+                    var borderStyle = poo.options.bordertop['style'];
+                    var borderColor = poo.options.bordertop['color'];
+                    $('body').css('border-top', 'none');
+                    var $newBorder = $('#body-border-top');
+                    if ($newBorder.length == 0) {
+                        $newBorder = $('<div id="body-border-top"></div>');
+                    }
+                    $newBorder.css('border-top-width', borderWidth + 'px');
+                    $newBorder.css('border-top-style', borderStyle);
+                    $newBorder.css('border-top-color', borderColor);
+                    $newBorder.css('position', 'fixed')
+                    $newBorder.css('width', '100%');
+                    $newBorder.css('z-index', 10);
+                    $('body').prepend($newBorder);
+
+                    poo.borderTopWidth = borderWidth;
+                }
+
+ 				poo.stickyHdr.top += poo.x + poo.y + poo.borderTopWidth;
+
+ 				poo.stickyTopNav.top += poo.x + poo.borderTopWidth;
  				poo.topNavH = poo.y;
+
  			 	// make it sticky
  				if ( poo.isFullWidth && poo.hdrBackgroundCss.opacity == '1' )
  			  		poo.stickyHdr.height = poo.hdrDims.outerHeight; 
@@ -120,26 +157,49 @@
  					poo.stickyLayr.top = poo.stickyHdr.top; 
 					poo.hdrBackdrop.css(poo.stickyLayr);
 					poo.hdrBackground.css(poo.stickyLayr);
-				}				
-				poo.hdr.after( "<div></div>" );					// mind the gap 
-				poo.hdr.next().height(poo.hdrDims.trueOuterHeight);
-				poo.hdr.next().height( poo.hdr.next().height() + $('#top:visible').height() );
+				}
+
+                var $headerAfterGap = $('#header-after-gap');
+                if ($headerAfterGap.length == 0) {
+                    $headerAfterGap = $('<div id="header-after-gap"></div>');
+                    poo.hdr.after($headerAfterGap);					// mind the gap
+                }
+
+                var topHeight = $('#top:visible').height();
+                topHeight = (isNaN(topHeight) ? 0 : topHeight);
+                var h = poo.hdrDims.trueOuterHeight;
+                h = parseInt(h.substr(0, h.length - 2));
+
+                $headerAfterGap.height(h + topHeight + poo.borderTopWidth);
+//                $headerAfterGap.height( poo.hdr.next().height() +  );
 			}			
 			function setNavbarSticky() {
-				poo.nav.before( '<div></div>' );
-				poo.navSticky = poo.nav.prev();
-	 			poo.nav.detach().appendTo( poo.navSticky );		// move nav menu
- 				poo.stickyNav.top = poo.nav.offset().top + poo.topNavH;
+                var $navOuterContainer = $('#nav-outer-container');
+                if ($navOuterContainer.length == 0) {
+                    $navOuterContainer = $('<div id="nav-outer-container"></div>');
+                    poo.nav.before( $navOuterContainer );
+                    poo.navSticky = $navOuterContainer;
+                    poo.nav.detach().appendTo( poo.navSticky );		// move nav menu
+                }
+
+ 				poo.stickyNav.top = $('#header-after-gap').offset().top + $('#header-after-gap').height();// + poo.topNavH;
+                console.log("poo.nav.offset().top: " + poo.nav.offset().top + "\n");
+                poo.navSticky = $navOuterContainer;
  				poo.navSticky.css(poo.stickyNav);				// stick it
- 				poo.navSticky.after( "<div></div>" );			// mind with gap
-				poo.navSticky.next().height(poo.nav.outerHeight(true));
+
+                var $navOuterContainerAfter = $('#nav-outer-container-after');
+                if ($navOuterContainerAfter.length == 0) {
+                    $navOuterContainerAfter = $('<div id="nav-outer-container-after"></div>');
+                    poo.navSticky.after( $navOuterContainerAfter );			// mind with gap
+                }
+                $navOuterContainerAfter.height(poo.nav.outerHeight(true));
 			}
 			function setBackgroundOpacity() { // set header background opacity
 				// create backdrop layer - hide stuff scrolling through stuck header
 				poo.hdr.before( '<div class="pooOlayer"></div>' );
 				poo.hdrBackdrop = poo.hdr.prev();
 				if ( isTransparent(poo.hdr) ) {
-					if (debug) alert("setBackgroundOpacity says hdr transparent test is true" +" " +poo.hdr.css('background-image') +" " + poo.hdr.css('background-color') );
+					if (debug) console.log("setBackgroundOpacity says hdr transparent test is true" +" " +poo.hdr.css('background-image') +" " + poo.hdr.css('background-color') );
 					poo.hdrBackdrop.css('background-color', $('body').css('background-color'));
 				} else
 					poo.hdrBackdrop.css('background-color', 'transparent');
@@ -161,15 +221,16 @@
 				poo.hdr.css( poo.hdrCss );		// this layer in the forefront 
 				poo.opacityLayers = true;
 			}
+
 			function isTransparent(elm) {
-				// is the background transparent - no image and no color 
-				if (debug) alert("isTransparent says color is: " +elm.css('background-color') );
+				// is the background transparent - no image and no color
+				if (debug) console.log("isTransparent says color is: " +elm.css('background-color') );
 				if ( elm.css('background-image') == 'none' ) 					// then if
 					if ( elm.css('background-color') == 'rgba(0, 0, 0, 0)' || elm.css('background-color') == 'transparent' )	
 						return true;
 				return false;
 			}
-			function doMobile() {					// stickiness in canvas responsive layout
+			function doStickyMobile() {					// stickiness in canvas responsive layout
 				var lNav, lHdr, lTog, headr;
 				lNav = poo.viewportW * 0.8  + "px !important; "
 				lHdr = poo.viewportW * 0.85 + "px; "
@@ -218,6 +279,31 @@
 				poo.hdr.css(poo.stickyMobileHdr);
 				return;
 			}
+
+            function doNormalMobile() {
+                var mobileNavBarHeight = $('.nav-toogle').height();
+
+                poo.x = $('#wpadminbar:visible').height();
+                poo.x = ( poo.x == null || isNaN(poo.x)) ? 0 : poo.x;
+                poo.y = $('#top:visible').height();
+                poo.y = ( poo.y == null || isNaN(poo.y)) ? 0 : poo.y;
+
+                poo.stickyHdr.top = poo.x + poo.y + poo.borderTopWidth + mobileNavBarHeight;
+
+                $('#body-border-top').css('position', 'static');
+                poo.hdr.css(poo.stickyHdr);
+                poo.hdr.css('position', 'static');
+                poo.hdr.css('height', 'auto');
+
+                $('#nav-outer-container').css('position', 'static');
+
+                $('#header-after-gap').css('height', '0');
+                $('#nav-outer-container-after').css('height', '0');
+                $('#top').hide();
+
+                console.log('Do Normal Mobile');
+            }
+
 			function sticky(elm) {
 				var	h = elm.outerHeight(),
 					w = elm.width();
@@ -227,5 +313,60 @@
 				elm.next().height( h );								// mind the gap				
 			}
     	});
-    };
+    }
+
+    $(document).ready(function () {
+        $(window).resize(function () {
+           $('#header').stickypoo(pootlepress.stickyHdrOptions);
+        });
+
+        $(window).scroll(function () {
+
+            clearTimeout($.data(this, 'scrollTimer'));
+            $.data(this, 'scrollTimer', setTimeout(function() {
+
+                var bgColor = pootlepress.poo.hdr.attr('bg-color');
+                pootlepress.poo.hdr.css('background-color', bgColor);
+
+                //console.log("Haven't scrolled in 250ms!");
+            }, 250));
+
+            var bgColor = pootlepress.poo.hdr.attr('bg-color');
+            var opacity = pootlepress.poo.options.opacity;
+
+            var rgba = convertRgbToRgba(bgColor, opacity);
+            pootlepress.poo.hdr.css('background-color', rgba);
+//            console.log("Scrolling: bgColor: " + bgColor + ", opacity: " + opacity + ", rgba: " + rgba);
+        });
+    });
+
+    function convertHexToDec(s) {
+        return parseInt(s, 16);
+    }
+
+    function convertRgbToRgba(rgb, opacityPercent) {
+        var s = rgb.substr(0, rgb.length - 1);
+
+        var opacityVal = opacityPercent / 100;
+
+        s += ", " + opacityVal + ")";
+
+        s = s.replace('rgb', 'rgba');
+
+        return s;
+    }
+
+    function convertHexColorToRGBA(hexColor, opacityPercent) {
+        var rHex = hexColor.substr(1, 2);
+        var gHex = hexColor.substr(3, 2);
+        var bHex = hexColor.substr(5, 2);
+
+        var rDec = convertHexToDec(rHex);
+        var gDec = convertHexToDec(gHex);
+        var bDec = convertHexToDec(bHex);
+
+        var opacityVal = opacityPercent / 100;
+
+        return "rgba(" + rDec + ", " + gDec + ", " + bDec + ", " + opacityVal + ")";
+    }
 } ( jQuery ));

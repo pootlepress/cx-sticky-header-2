@@ -100,7 +100,7 @@ class Pootlepress_Sticky_Header {
 			'id' => 'pootlepress-sticky-header-wpadminbar', 
 			'name' => __( 'Wordpress Admin Bar', 'pootlepress-sticky-header' ), 
 			'desc' => __( 'Disable the Wordpress Admin Bar (so the Wordpress admin bar will not hide the sticky header).', 'pootlepress-sticky-header' ), 
-			'std' => 'true',
+			'std' => 'false',
 			'type' => 'checkbox' );
 		$options[] = array(
 			'id' => 'pootlepress-sticky-header-align-right-option', 
@@ -108,12 +108,12 @@ class Pootlepress_Sticky_Header {
 			'desc' => __( 'Align the nav menu to the right of the logo.', 'pootlepress-sticky-header' ), 
 			'std' => 'false',
 			'type' => 'checkbox' );
-        $options[] = array(
-           	'id' => 'pootlepress-sticky-header-sticky-mobile',
-			'name' => __( 'Enable Sticky in Mobile View', 'pootlepress-sticky-header' ),
-			'desc' => __( 'Enable Sticky in Mobile View', 'pootlepress-sticky-header' ),
-           	'std' => 'false',
-           	'type' => 'checkbox' );
+//        $options[] = array(
+//           	'id' => 'pootlepress-sticky-header-sticky-mobile',
+//			'name' => __( 'Enable Sticky in Mobile View', 'pootlepress-sticky-header' ),
+//			'desc' => __( 'Enable Sticky in Mobile View', 'pootlepress-sticky-header' ),
+//           	'std' => 'false',
+//           	'type' => 'checkbox' );
         $options[] = array(
          	'id' => 'pootlepress-sticky-header-opacity',
            	'name' => __( 'Header Opacity', 'pootlepress-sticky-header' ),
@@ -204,7 +204,8 @@ class Pootlepress_Sticky_Header {
 		$_stickyenabled  	= get_option('pootlepress-sticky-header-option', 'false');
 		$_wpadminbarhide 	= get_option('pootlepress-sticky-header-wpadminbar', 'false');
 		$_alignr = get_option('pootlepress-sticky-header-align-right-option', 'false');
-        $_stickyMobileEnabled = get_option('pootlepress-sticky-header-sticky-mobile', 'false');
+//        $_stickyMobileEnabled = get_option('pootlepress-sticky-header-sticky-mobile', 'false');
+        $_stickyMobileEnabled = 'false';
 		$_fixed_mobile_layout = get_option('woo_remove_responsive', 'false');
 		if ($_fixed_mobile_layout == 'true')				// if responsive disabled 
 			$_responsive = 'false'; else $_responsive = 'true';
@@ -214,6 +215,16 @@ class Pootlepress_Sticky_Header {
 			if ( is_numeric( $v ))
 				$_opacity = intval($v); else $_opacity = 100;
 		}
+
+        $borderTop = get_option('woo_border_top');
+        if ($borderTop && isset($borderTop['width']) && $borderTop['width'] > 0) {
+            $borderTopJson = json_encode($borderTop);
+        } else {
+            $borderTopJson = json_encode(false);
+        }
+
+        $layoutWidth = get_option('woo_layout_width');
+
 		$output .= "    $('#header').stickypoo( { stickyhdr : $_stickyenabled";
 		$output .= ", stickynav : $_stickyenabled";
 		$output .= ", alignright : $_alignr";
@@ -221,6 +232,8 @@ class Pootlepress_Sticky_Header {
 		$output .= ", responsive : $_responsive";
 		$output .= ", opacity : $_opacity";
 		$output .= ", wpadminbar : $_wpadminbarhide";
+        $output .= ", bordertop : $borderTopJson";
+        $output .= ", layoutWidth: $layoutWidth";
 		$output .= ' });' . "\n";
 		return $output;
 	}
