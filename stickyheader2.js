@@ -322,21 +322,24 @@
 
         $(window).scroll(function () {
 
-            clearTimeout($.data(this, 'scrollTimer'));
-            $.data(this, 'scrollTimer', setTimeout(function() {
+            if (window.innerWidth >= 768) {
+                // is normal screen
+                if ($(window).scrollTop() == 0) {
+                    var bgColor = pootlepress.poo.hdr.attr('bg-color');
+                    pootlepress.poo.hdr.css('background-color', bgColor);
+                } else {
+                    var bgColor = pootlepress.poo.hdr.attr('bg-color');
+                    var opacity = pootlepress.poo.options.opacity;
 
+                    var rgba = convertRgbToRgba(bgColor, opacity);
+                    pootlepress.poo.hdr.css('background-color', rgba);
+                }
+            } else {
+                // is mobile view
                 var bgColor = pootlepress.poo.hdr.attr('bg-color');
                 pootlepress.poo.hdr.css('background-color', bgColor);
+            }
 
-                //console.log("Haven't scrolled in 250ms!");
-            }, 250));
-
-            var bgColor = pootlepress.poo.hdr.attr('bg-color');
-            var opacity = pootlepress.poo.options.opacity;
-
-            var rgba = convertRgbToRgba(bgColor, opacity);
-            pootlepress.poo.hdr.css('background-color', rgba);
-//            console.log("Scrolling: bgColor: " + bgColor + ", opacity: " + opacity + ", rgba: " + rgba);
         });
     });
 
