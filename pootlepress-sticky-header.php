@@ -4,7 +4,7 @@
 Plugin Name: Canvas Extension - Sticky Header
 Plugin URI: http://pootlepress.com/canvas-extensions/
 Description: An extension for WooThemes Canvas that makes the header 'stick' at the top of the page.
-Version: 2.3.2
+Version: 2.0
 Author: PootlePress
 Author URI: http://pootlepress.com/
 License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -27,7 +27,7 @@ License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2
 	$health = "ok";
 	require_once( 'classes/class-pootlepress-sticky-header.php' );
     $GLOBALS['pootlepress_sticky_header'] = new Pootlepress_Sticky_Header( __FILE__ );
-    $GLOBALS['pootlepress_sticky_header']->version = '2.3.2';
+    $GLOBALS['pootlepress_sticky_header']->version = '2.0';
 
 	if (!function_exists('check_main_heading')) {
 		function check_main_heading() {
