@@ -8,4 +8,6 @@ Instructions
 
 Versions
 
+v2.0.1 - update full header option handling
+
 v2.0 - Initial version 2 release
