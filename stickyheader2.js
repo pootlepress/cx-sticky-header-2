@@ -15,7 +15,7 @@
     		options			:	o,
     		viewportW		:	window.innerWidth, // this is the width that media query in css is tested against
     		isMobile		:	(window.innerWidth < 768) ? true : false,
-    		isFullWidth		:	($('body').hasClass("full-width")) ? true : false,
+    		isFullWidth		:	($('body').hasClass("full-header")) ? true : false,
     		isBoxedLayout	:	($('body').hasClass("boxed-layout")) ? true : false,
     		isFixedMobile	:	($('body').hasClass("fixed-mobile")) ? true : false,
     		opacityLayers	:	false,
@@ -183,7 +183,7 @@
                 }
 
  				poo.stickyNav.top = $('#header-after-gap').offset().top + $('#header-after-gap').height();// + poo.topNavH;
-                console.log("poo.nav.offset().top: " + poo.nav.offset().top + "\n");
+//                console.log("poo.nav.offset().top: " + poo.nav.offset().top + "\n");
                 poo.navSticky = $navOuterContainer;
  				poo.navSticky.css(poo.stickyNav);				// stick it
 
