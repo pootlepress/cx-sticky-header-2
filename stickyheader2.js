@@ -28,7 +28,7 @@
     		headerMods	:	{ paddingBottom : 0 },
     		stickyLayr	:	{ position : 'fixed', top : 0, display : 'block' },
     		stickyHdr	:	{ position : 'fixed', top : 0, display : 'block', zIndex : 9003 },
-    		stickyNav 	: 	{ position : 'fixed', top : 0, display : 'block', zIndex : 9001 },
+    		stickyNav 	: 	{ position : 'fixed', top : 0, display : 'block', zIndex : 10000 },
     		stickyTopNav: 	{ position : 'fixed', top : 0, display : 'block', zIndex : 9004, width : '100%' },
     		stickyMobileHdr	:	{ zIndex : 9003 },
     		hdrDims				:	{ width : 'auto', height : 'auto' },
