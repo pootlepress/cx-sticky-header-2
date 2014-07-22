@@ -8,6 +8,8 @@ Instructions
 
 Versions
 
+v2.1 - ability to update within WordPress
+
 v2.0.1 - update full header option handling
 
 v2.0 - Initial version 2 release
