@@ -31,7 +31,9 @@ class Pootlepress_Sticky_Header {
 		add_action( 'init', array( &$this, 'load_localisation' ), 0 );
 		add_action( 'init','check_main_heading', 0 );
 		add_action( 'admin_init', 'poo_commit_suicide' );
-		add_action( 'admin_init', array( &$this, 'poo_shutdown_others') );
+
+        // this is not needed
+//		add_action( 'admin_init', array( &$this, 'poo_shutdown_others') );
 
 		// Run on activation.
 		register_activation_hook( $file, array( &$this, 'activation' ) );
