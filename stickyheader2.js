@@ -62,8 +62,8 @@
 	 			poo.stickyHdr.width = '100%';
 	 			poo.stickyNav.width = '100%';
 				poo.hdr = poo.elm.parent();
-				poo.elm.css( { backgroundColor : 'rgba(0, 0, 0, 0)' } );	// conflict
-				poo.elm.css( { backgroundImage : 'none' } );				// avoidance
+//				poo.elm.css( { backgroundColor : 'rgba(0, 0, 0, 0)' } );	// conflict
+//				poo.elm.css( { backgroundImage : 'none' } );				// avoidance
 			} else if ( poo.isBoxedLayout ) {
 				poo.stickyHdr.top += parseInt($('#inner-wrapper').css('border-top-width'));
 				poo.stickyHdr.width = poo.hdrDims.width;
