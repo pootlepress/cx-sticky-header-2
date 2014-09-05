@@ -318,30 +318,41 @@
     $(document).ready(function () {
         $(window).resize(function () {
            $('#header').stickypoo(pootlepress.stickyHdrOptions);
+
+            if (typeof window.setSubMenuWidth != 'undefined') {
+                window.setSubMenuWidth();
+            }
         });
 
         $(window).scroll(function () {
+            stickyHeaderScroll()
+        });
 
-            if (window.innerWidth >= 768) {
-                // is normal screen
-                if ($(window).scrollTop() == 0) {
-                    var bgColor = pootlepress.poo.hdr.attr('bg-color');
-                    pootlepress.poo.hdr.css('background-color', bgColor);
-                } else {
-                    var bgColor = pootlepress.poo.hdr.attr('bg-color');
-                    var opacity = pootlepress.poo.options.opacity;
+    });
 
-                    var rgba = convertRgbToRgba(bgColor, opacity);
-                    pootlepress.poo.hdr.css('background-color', rgba);
-                }
-            } else {
-                // is mobile view
+    function stickyHeaderScroll() {
+        if (window.innerWidth >= 768) {
+            // is normal screen
+            if ($(window).scrollTop() == 0) {
                 var bgColor = pootlepress.poo.hdr.attr('bg-color');
                 pootlepress.poo.hdr.css('background-color', bgColor);
+            } else {
+                var bgColor = pootlepress.poo.hdr.attr('bg-color');
+                var opacity = pootlepress.poo.options.opacity;
+
+                var rgba = convertRgbToRgba(bgColor, opacity);
+                pootlepress.poo.hdr.css('background-color', rgba);
             }
 
-        });
-    });
+            if (typeof window.setSubMenuWidth != 'undefined') {
+                window.setSubMenuWidth();
+            }
+        } else {
+            // is mobile view
+            var bgColor = pootlepress.poo.hdr.attr('bg-color');
+            pootlepress.poo.hdr.css('background-color', bgColor);
+        }
+    }
 
     function convertHexToDec(s) {
         return parseInt(s, 16);
