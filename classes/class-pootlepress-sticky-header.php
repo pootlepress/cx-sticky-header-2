@@ -241,7 +241,7 @@ class Pootlepress_Sticky_Header {
         $output .= "if (typeof window.setSubMenuWidth != 'undefined') {\n";
         $output .= "\t" . "window.setSubMenuWidth();\n";
         $output .= "}\n";
-        
+
 		return $output;
 	}
 } // End Class

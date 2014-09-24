@@ -313,22 +313,27 @@
 				elm.next().height( h );								// mind the gap				
 			}
     	});
-    }
+    };
 
     $(document).ready(function () {
         $(window).resize(function () {
-           $('#header').stickypoo(pootlepress.stickyHdrOptions);
-
-            if (typeof window.setSubMenuWidth != 'undefined') {
-                window.setSubMenuWidth();
-            }
+            stickyHeaderResize();
         });
 
         $(window).scroll(function () {
             stickyHeaderScroll()
         });
 
+        setTimeout(stickyHeaderResize, 100);
     });
+
+    function stickyHeaderResize() {
+        $('#header').stickypoo(pootlepress.stickyHdrOptions);
+
+        if (typeof window.setSubMenuWidth != 'undefined') {
+            window.setSubMenuWidth();
+        }
+    }
 
     function stickyHeaderScroll() {
         if (window.innerWidth >= 768) {
