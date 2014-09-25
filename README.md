@@ -8,6 +8,8 @@ Instructions
 
 Versions
 
+v2.1.2 - fix compatiblity with horizontal sub-menu extensions and align menu right option / fix primary nav appearing in middle of header issue / fix top nav dropdown going under primary nav
+
 v2.1 - ability to update within WordPress
 
 v2.0.1 - update full header option handling
