@@ -324,7 +324,11 @@
             stickyHeaderScroll()
         });
 
-        setTimeout(stickyHeaderResize, 100);
+        if ($("#logo img").length > 0) {
+            $("#logo img").load(function () {
+                stickyHeaderResize();
+            });
+        }
     });
 
     function stickyHeaderResize() {
