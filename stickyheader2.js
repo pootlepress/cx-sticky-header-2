@@ -167,8 +167,14 @@
 
                 var topHeight = $('#top:visible').height();
                 topHeight = (isNaN(topHeight) ? 0 : topHeight);
-                var h = poo.hdrDims.trueOuterHeight;
-                h = parseInt(h.substr(0, h.length - 2));
+
+                var h = 0;
+                if (poo.hdr.css('display') != 'none') {
+                    h = poo.hdrDims.trueOuterHeight;
+                    h = parseInt(h.substr(0, h.length - 2));
+                } else {
+                    h = 0;
+                }
 
                 $headerAfterGap.height(h + topHeight + poo.borderTopWidth);
 //                $headerAfterGap.height( poo.hdr.next().height() +  );
