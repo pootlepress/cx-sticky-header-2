@@ -107,7 +107,7 @@ class Pootlepress_Sticky_Header {
 		$options[] = array(
 			'id' => 'pootlepress-sticky-header-align-right-option', 
 			'name' => __( 'Align Nav Menu Right', 'pootlepress-sticky-header-align-right-option' ), 
-			'desc' => __( 'Align the nav menu to the right of the logo.', 'pootlepress-sticky-header' ), 
+			'desc' => __( 'Align the nav menu to the right of the logo. Please make sure you are not using any other plugins to align the menu right as this can cause issues.', 'pootlepress-sticky-header' ),
 			'std' => 'false',
 			'type' => 'checkbox' );
 //        $options[] = array(
