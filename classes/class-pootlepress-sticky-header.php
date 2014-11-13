@@ -29,7 +29,7 @@ class Pootlepress_Sticky_Header {
 		$this->file = $file;
 		$this->load_plugin_textdomain();
 		add_action( 'init', array( &$this, 'load_localisation' ), 0 );
-		add_action( 'init','check_main_heading', 0 );
+
 		add_action( 'admin_init', 'poo_commit_suicide' );
 
         // this is not needed
@@ -44,7 +44,7 @@ class Pootlepress_Sticky_Header {
 		add_action( 'woothemes_wp_head_after', array( &$this, 'poo_inline_javascript'), 10 );
 		
 		// add custom theme options
-		add_filter( 'option_woo_template', array( &$this, 'add_theme_options' ) );
+		$this->add_theme_options();
 
 		// sticky header options processing
 		add_action('init', array( &$this, 'process_sticky_header_options' ) );
@@ -88,28 +88,38 @@ class Pootlepress_Sticky_Header {
 	 * @since  2.0.1
 	 * @param array $o The array of options, as stored in the database.
 	 */	
-	public function add_theme_options ( $options ) {
+	public function add_theme_options () {
+        $options = array();
+
+        $options[] = array(
+            'name' => 'Sticky Header',
+            'type' => 'heading' );
+
 		$options[] = array(
-			'name' => 'Sticky Header', 
+			'name' => 'Sticky Header Settings',
 			'type' => 'subheading' );
+
 		$options[] = array(
 			'id' => 'pootlepress-sticky-header-option', 
 			'name' => __( 'Sticky Header', 'pootlepress-sticky-header' ), 
 			'desc' => __( 'Enable sticky header', 'pootlepress-sticky-header' ), 
 			'std' => 'true',
 			'type' => 'checkbox' );
+
 		$options[] = array(
 			'id' => 'pootlepress-sticky-header-wpadminbar', 
 			'name' => __( 'Wordpress Admin Bar', 'pootlepress-sticky-header' ), 
 			'desc' => __( 'Disable the Wordpress Admin Bar (so the Wordpress admin bar will not hide the sticky header).', 'pootlepress-sticky-header' ), 
 			'std' => 'false',
 			'type' => 'checkbox' );
+
 		$options[] = array(
 			'id' => 'pootlepress-sticky-header-align-right-option', 
 			'name' => __( 'Align Nav Menu Right', 'pootlepress-sticky-header-align-right-option' ), 
 			'desc' => __( 'Align the nav menu to the right of the logo. Please make sure you are not using any other plugins to align the menu right as this can cause issues.', 'pootlepress-sticky-header' ),
 			'std' => 'false',
 			'type' => 'checkbox' );
+
 //        $options[] = array(
 //           	'id' => 'pootlepress-sticky-header-sticky-mobile',
 //			'name' => __( 'Enable Sticky in Mobile View', 'pootlepress-sticky-header' ),
@@ -122,7 +132,12 @@ class Pootlepress_Sticky_Header {
            	'desc' => __( 'Header Background ( color / image ) Opacity (%)', 'pootlepress-sticky-header' ),
            	'std' => '100',
            	'type' => 'text' );
-		return($options);
+
+        $afterName = 'Map Callout Text';
+        $afterType = 'textarea';
+
+        global $PCO;
+        $PCO->add_options($afterName, $afterType, $options);
 	} 		// End add_theme_options()
 	
 	/**

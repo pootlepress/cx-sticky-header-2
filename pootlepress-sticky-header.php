@@ -27,6 +27,7 @@ License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2
 
 	require_once( 'classes/class-pootlepress-sticky-header.php' );
     require_once( 'classes/class-pootlepress-updater.php');
+    require_once( 'classes/class-pootlepress-canvas-options.php');
     require_once('pootlepress-sticky-header-functions.php');
 
     $GLOBALS['pootlepress_sticky_header'] = new Pootlepress_Sticky_Header( __FILE__ );
