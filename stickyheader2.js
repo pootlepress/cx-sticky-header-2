@@ -101,7 +101,7 @@
 					setNavbarSticky();					// make it sticky
 			}
 
-            if ( poo.isMobile && poo.options.responsive ) {	// mobile view and responsive layout
+            if (poo.options.stickyhdr && poo.isMobile && poo.options.responsive ) {	// mobile view and responsive layout
                 if (poo.options.mobile) {
                     doStickyMobile();
                 } else {
@@ -300,6 +300,7 @@
                 poo.hdr.css(poo.stickyHdr);
                 poo.hdr.css('position', 'static');
                 poo.hdr.css('height', 'auto');
+                poo.hdr.css('width', 'auto');
 
                 $('#nav-outer-container').css('position', 'static');
 
