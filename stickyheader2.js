@@ -66,7 +66,7 @@
 //				poo.elm.css( { backgroundImage : 'none' } );				// avoidance
 			} else if ( poo.isBoxedLayout ) {
 				poo.stickyHdr.top += parseInt($('#inner-wrapper').css('border-top-width'));
-				poo.stickyHdr.width = poo.hdrDims.width;
+				poo.stickyHdr.width = poo.hdrDims.outerWidth;
  				poo.stickyNav.width = poo.nav.css('width');
  			} else if ( poo.isFixedMobile && poo.isMobile ) {
     			poo.stickyNav.width = '100%';
