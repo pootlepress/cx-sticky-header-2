@@ -56,10 +56,12 @@ class Pootlepress_Sticky_Header {
 	//		plugins_url( '../jquery.mobile-1.4.2.min.js' , __FILE__ ),
 	//		array( 'jquery' ),
 	//		false, false );
+
+		wp_enqueue_script('pp-sh-imagesloaded', plugins_url('../imagesloaded.pkgd.min.js', __FILE__), array('jquery'));
+
 		wp_enqueue_script('stickyheader2_js',
 			plugins_url( '../stickyheader2.js' , __FILE__ ),
-			array( 'jquery' ),
-			false, false
+			array( 'jquery', 'pp-sh-imagesloaded' )
 		);
 	}
 

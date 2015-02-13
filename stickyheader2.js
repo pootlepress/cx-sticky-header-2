@@ -332,7 +332,9 @@
         });
 
         if ($("#logo img").length > 0) {
-            $("#logo img").load(function () {
+			// use this function instead of jQuery 'load' event,
+			// or else it will not fire when first load of page, or hard refresh with cleared cache
+            $("#logo img").imagesLoaded(function () {
                 stickyHeaderResize();
             });
         }
