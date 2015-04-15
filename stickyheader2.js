@@ -319,6 +319,9 @@
 				elm.after( "<div></div>" );							// create  gap 
 				elm.next().height( h );								// mind the gap				
 			}
+			
+			//Initial transparency on startup
+			stickyHeaderScroll();
     	});
     };
 
@@ -330,7 +333,7 @@
         $(window).scroll(function () {
             stickyHeaderScroll()
         });
-
+		
         if ($("#logo img").length > 0) {
 			// use this function instead of jQuery 'load' event,
 			// or else it will not fire when first load of page, or hard refresh with cleared cache
@@ -350,15 +353,14 @@
 
     function stickyHeaderScroll() {
         if (window.innerWidth >= 768) {
+            var bgColor = pootlepress.poo.hdr.attr('bg-color');
+            var opacity = pootlepress.poo.options.opacity;
+            var rgba = convertRgbToRgba(bgColor, opacity);
             // is normal screen
             if ($(window).scrollTop() == 0) {
                 var bgColor = pootlepress.poo.hdr.attr('bg-color');
-                pootlepress.poo.hdr.css('background-color', bgColor);
+                pootlepress.poo.hdr.css('background-color', rgba);
             } else {
-                var bgColor = pootlepress.poo.hdr.attr('bg-color');
-                var opacity = pootlepress.poo.options.opacity;
-
-                var rgba = convertRgbToRgba(bgColor, opacity);
                 pootlepress.poo.hdr.css('background-color', rgba);
             }
 
