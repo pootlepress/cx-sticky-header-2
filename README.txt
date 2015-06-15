@@ -8,6 +8,10 @@ Instructions
 
 Versions
 
+15.06.2015 - Version 2.1.4
+ * Fix - header height
+ * Fix - top position transparancy 
+ 
 22.01.2015 - Version 2.1.3
  * Tweak - add new Sticky Header settings page in Canvas theme settings
  * Tweak - add more help text
