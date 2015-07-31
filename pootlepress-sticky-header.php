@@ -1,5 +1,4 @@
 <?php
-    if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /*
 Plugin Name: Canvas Extension - Sticky Header
 Plugin URI: http://pootlepress.com/canvas-extensions/
@@ -9,40 +8,33 @@ Author: PootlePress
 Author URI: http://pootlepress.com/
 License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 */
-/*  Copyright 2012  Pootlepress  (email : jamie@pootlepress.co.uk)
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
-    published by the Free Software Foundation.
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+require_once( 'classes/class-pootlepress-sticky-header.php' );
+require_once( 'classes/class-pootlepress-canvas-options.php');
+require_once('pootlepress-sticky-header-functions.php');
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/	  
+$GLOBALS['pootlepress_sticky_header'] = new Pootlepress_Sticky_Header( __FILE__ );
+$GLOBALS['pootlepress_sticky_header']->version = '2.1.4';
 
-	require_once( 'classes/class-pootlepress-sticky-header.php' );
-    require_once( 'classes/class-pootlepress-updater.php');
-    require_once( 'classes/class-pootlepress-canvas-options.php');
-    require_once('pootlepress-sticky-header-functions.php');
-
-    $GLOBALS['pootlepress_sticky_header'] = new Pootlepress_Sticky_Header( __FILE__ );
-    $GLOBALS['pootlepress_sticky_header']->version = '2.1.4';
-
-add_action('init', 'pp_sh2_updater');
-function pp_sh2_updater()
-{
-    if (!function_exists('get_plugin_data')) {
-        include(ABSPATH . 'wp-admin/includes/plugin.php');
-    }
-    $data = get_plugin_data(__FILE__);
-    $wptuts_plugin_current_version = $data['Version'];
-    $wptuts_plugin_remote_path = 'http://www.pootlepress.com/?updater=1';
-    $wptuts_plugin_slug = plugin_basename(__FILE__);
-    new Pootlepress_Updater ($wptuts_plugin_current_version, $wptuts_plugin_remote_path, $wptuts_plugin_slug);
-}
-?>
+//CX API
+require 'pp-cx/class-pp-cx-init.php';
+new PP_Canvas_Extensions_Init(
+	array(
+		'key'          => 'sticky-header',
+		'label'        => 'Sticky Header',
+		'url'          => 'http://www.pootlepress.com/shop/sticky-header-woothemes-canvas/',
+		'description'  => "Sticky header, allows you to stick the whole header and navigation of your site to the top of the page, including the logo.",
+		'img'          => 'http://www.pootlepress.com/wp-content/uploads/2014/02/sticky-header-icon.png',
+		'installed'    => true,
+		'settings_url' => admin_url( 'admin.php?page=pp-extensions&cx=sticky-header' ),
+	),
+	array(
+		//Tabs coming soon
+	),
+	'pp_cx_sticky_header',
+	'Canvas Extension - Sticky Header',
+	$GLOBALS['pootlepress_sticky_header']->version,
+	__FILE__
+);
