@@ -31,7 +31,7 @@ new PP_Canvas_Extensions_Init(
 		'settings_url' => admin_url( 'admin.php?page=pp-extensions&cx=sticky-header' ),
 	),
 	array(
-		'?page=woothemes&tab=sticky-header' => 'General settings',
+		'?page=woothemes&tab=sticky-header' => 'General Settings',
 	),
 	'pp_cx_sticky_header',
 	'Canvas Extension - Sticky Header',
