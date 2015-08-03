@@ -122,12 +122,6 @@ class Pootlepress_Sticky_Header {
 			'std' => 'false',
 			'type' => 'checkbox' );
 
-//        $options[] = array(
-//           	'id' => 'pootlepress-sticky-header-sticky-mobile',
-//			'name' => __( 'Enable Sticky in Mobile View', 'pootlepress-sticky-header' ),
-//			'desc' => __( 'Enable Sticky in Mobile View', 'pootlepress-sticky-header' ),
-//           	'std' => 'false',
-//           	'type' => 'checkbox' );
         $options[] = array(
          	'id' => 'pootlepress-sticky-header-opacity',
            	'name' => __( 'Header Opacity', 'pootlepress-sticky-header' ),
