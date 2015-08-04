@@ -28,13 +28,7 @@ new PP_Canvas_Extensions_Init(
 		'description'  => "Sticky header, allows you to stick the whole header and navigation of your site to the top of the page, including the logo.",
 		'img'          => 'http://www.pootlepress.com/wp-content/uploads/2014/02/sticky-header-icon.png',
 		'installed'    => true,
-		'settings_url' => admin_url( 'admin.php?page=pp-extensions&cx=sticky-header' ),
+		'settings_url' => admin_url( 'admin.php?page=woothemes&tab=sticky-header' ),
 	),
-	array(
-		'?page=woothemes&tab=sticky-header' => 'General Settings',
-	),
-	'pp_cx_sticky_header',
-	'Canvas Extension - Sticky Header',
-	$GLOBALS['pootlepress_sticky_header']->version,
 	__FILE__
 );
