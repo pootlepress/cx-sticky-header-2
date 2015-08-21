@@ -42,7 +42,7 @@ class Pootlepress_Sticky_Header {
 	//	add_action( 'wp_enqueue_scripts', array( &$this, 'poo_hookup_styles' ));
 		add_action( 'wp_enqueue_scripts', array( &$this, 'poo_hookup_scripts'));
 		add_action( 'woothemes_wp_head_after', array( &$this, 'poo_inline_javascript'), 10 );
-		
+
 		// add custom theme options
 		$this->add_theme_options();
 
@@ -50,7 +50,7 @@ class Pootlepress_Sticky_Header {
 		add_action('init', array( &$this, 'process_sticky_header_options' ) );
 	} // End __construct()
 
-	// plugin javascript	
+	// plugin javascript
 	public function poo_hookup_scripts() {
 	//	wp_enqueue_script('jquery-mobile',
 	//		plugins_url( '../jquery.mobile-1.4.2.min.js' , __FILE__ ),
@@ -65,7 +65,7 @@ class Pootlepress_Sticky_Header {
 		);
 	}
 
-	// plugin css	
+	// plugin css
 	public function poo_hookup_styles() {
 		wp_enqueue_style('jquery-mobile',
 			plugins_url('../jquery.mobile-1.4.2.min.css', __FILE__)
@@ -74,7 +74,13 @@ class Pootlepress_Sticky_Header {
 
 	// generate plugin custom inline javascript - driven by theme options
 	public function poo_inline_javascript() {
-		echo "\n" . '<!-- Sticky Header Inline Javascript -->' . "\n";
+		echo "\n" . '<!-- Sticky Header Inline Scripts -->' . "\n";
+		echo '<style>' . "\n";
+		echo '.poo_sh2_menu_right #header + #nav-container,' .
+		 '.poo_sh2_menu_right #header-container + #nav-container{' . "\n";
+		echo 'display: none;' . "\n";
+		echo '}' . "\n";
+		echo '</style>' . "\n";
 		echo '<script>' . "\n";
 		echo "	/* set global variable for pootlepress common component area  */\n";
 		echo '	if (typeof pootlepress === "undefined") { var pootlepress = {} }' . "\n";
@@ -89,7 +95,7 @@ class Pootlepress_Sticky_Header {
 	 * @access public
 	 * @since  2.0.1
 	 * @param array $o The array of options, as stored in the database.
-	 */	
+	 */
 	public function add_theme_options () {
         $options = array();
 
@@ -102,32 +108,26 @@ class Pootlepress_Sticky_Header {
 			'type' => 'subheading' );
 
 		$options[] = array(
-			'id' => 'pootlepress-sticky-header-option', 
-			'name' => __( 'Sticky Header', 'pootlepress-sticky-header' ), 
-			'desc' => __( 'Enable sticky header', 'pootlepress-sticky-header' ), 
+			'id' => 'pootlepress-sticky-header-option',
+			'name' => __( 'Sticky Header', 'pootlepress-sticky-header' ),
+			'desc' => __( 'Enable sticky header', 'pootlepress-sticky-header' ),
 			'std' => 'true',
 			'type' => 'checkbox' );
 
 		$options[] = array(
-			'id' => 'pootlepress-sticky-header-wpadminbar', 
-			'name' => __( 'Wordpress Admin Bar', 'pootlepress-sticky-header' ), 
-			'desc' => __( 'Disable the Wordpress Admin Bar (so the Wordpress admin bar will not hide the sticky header).', 'pootlepress-sticky-header' ), 
+			'id' => 'pootlepress-sticky-header-wpadminbar',
+			'name' => __( 'Wordpress Admin Bar', 'pootlepress-sticky-header' ),
+			'desc' => __( 'Disable the Wordpress Admin Bar (so the Wordpress admin bar will not hide the sticky header).', 'pootlepress-sticky-header' ),
 			'std' => 'false',
 			'type' => 'checkbox' );
 
 		$options[] = array(
-			'id' => 'pootlepress-sticky-header-align-right-option', 
-			'name' => __( 'Align Nav Menu Right', 'pootlepress-sticky-header-align-right-option' ), 
+			'id' => 'pootlepress-sticky-header-align-right-option',
+			'name' => __( 'Align Nav Menu Right', 'pootlepress-sticky-header-align-right-option' ),
 			'desc' => __( 'Align the nav menu to the right of the logo. Please make sure you are not using any other plugins to align the menu right as this can cause issues. When align menu right is enabled the primary nav bottom margin in Canvas will not have a visible effect. To add a margin under the header for space between the header and the content use the a header bottom margin', 'pootlepress-sticky-header' ),
 			'std' => 'false',
 			'type' => 'checkbox' );
 
-//        $options[] = array(
-//           	'id' => 'pootlepress-sticky-header-sticky-mobile',
-//			'name' => __( 'Enable Sticky in Mobile View', 'pootlepress-sticky-header' ),
-//			'desc' => __( 'Enable Sticky in Mobile View', 'pootlepress-sticky-header' ),
-//           	'std' => 'false',
-//           	'type' => 'checkbox' );
         $options[] = array(
          	'id' => 'pootlepress-sticky-header-opacity',
            	'name' => __( 'Header Opacity', 'pootlepress-sticky-header' ),
@@ -141,7 +141,7 @@ class Pootlepress_Sticky_Header {
         global $PCO;
         $PCO->add_options($afterName, $afterType, $options);
 	} 		// End add_theme_options()
-	
+
 	/**
 	 * Load the plugin's localisation file.
 	 * @access public
@@ -151,7 +151,7 @@ class Pootlepress_Sticky_Header {
 	public function load_localisation () {
 		load_plugin_textdomain( $this->token, false, dirname( plugin_basename( $this->file ) ) . '/lang/' );
 	} // End load_localisation()
-	
+
 	/**
 	 * Load the plugin textdomain from the main WordPress "languages" folder.
 	 * @access public
@@ -162,7 +162,7 @@ class Pootlepress_Sticky_Header {
 	    $domain = $this->token;
 	    // The "plugin_locale" filter is also used in load_plugin_textdomain()
 	    $locale = apply_filters( 'plugin_locale', get_locale(), $domain );
-	 
+
 	    load_textdomain( $domain, WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo' );
 	    load_plugin_textdomain( $domain, FALSE, dirname( plugin_basename( $this->file ) ) . '/lang/' );
 	} // End load_plugin_textdomain()
@@ -205,11 +205,17 @@ class Pootlepress_Sticky_Header {
 				substr( $k, 0, 19) == 'cx-align-menu-right' ) {
 				if ( is_plugin_active($k) )
 					deactivate_plugins( $k );
-			}		
+			}
 	}
-	
+
+	function align_right_class( $classes ) {
+		$classes[] = 'poo_sh2_menu_right';
+
+		return $classes;
+	}
+
 	/**
-	 * Generate the javascript statement to invoke the Sticky Header jQuery function 
+	 * Generate the javascript statement to invoke the Sticky Header jQuery function
 	 * with the options based on the settings of the theme options.
 	 * @access private
 	 * @since  2.0.1
@@ -223,10 +229,14 @@ class Pootlepress_Sticky_Header {
 		$_stickyenabled  	= get_option('pootlepress-sticky-header-option', 'false');
 		$_wpadminbarhide 	= get_option('pootlepress-sticky-header-wpadminbar', 'false');
 		$_alignr = get_option('pootlepress-sticky-header-align-right-option', 'false');
-//        $_stickyMobileEnabled = get_option('pootlepress-sticky-header-sticky-mobile', 'false');
+
+		if ( 'true' == $_alignr ) {
+			add_filter('body_class', array( $this, 'align_right_class' ) );
+		}
+
         $_stickyMobileEnabled = 'false';
 		$_fixed_mobile_layout = get_option('woo_remove_responsive', 'false');
-		if ($_fixed_mobile_layout == 'true')				// if responsive disabled 
+		if ($_fixed_mobile_layout == 'true')				// if responsive disabled
 			$_responsive = 'false'; else $_responsive = 'true';
         $_opacity = get_option('pootlepress-sticky-header-opacity', '100');
 		if ( $_opacity != '100' ) {
