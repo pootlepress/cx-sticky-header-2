@@ -8,6 +8,9 @@ Instructions
 
 Versions
 
+27.08.2015 - Version 2.1.5
+ * Fix - jumping header with Menu Customizer align menu right setting
+
 15.06.2015 - Version 2.1.4
  * Fix - header height
  * Fix - top position transparancy 
