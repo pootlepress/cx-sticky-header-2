@@ -31,7 +31,7 @@ License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2
     require_once('pootlepress-sticky-header-functions.php');
 
     $GLOBALS['pootlepress_sticky_header'] = new Pootlepress_Sticky_Header( __FILE__ );
-    $GLOBALS['pootlepress_sticky_header']->version = '2.1.4';
+    $GLOBALS['pootlepress_sticky_header']->version = '2.1.5';
 
 add_action('init', 'pp_sh2_updater');
 function pp_sh2_updater()
